@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.views import View
 
 from django import http
+
+from django.shortcuts import redirect, reverse
 import re
 
 from users.models import User
@@ -32,13 +34,13 @@ class Register(View):
         if not re.match(r'^[a-z0-9A-Z_-]{5,20}$', username):
             return http.HttpResponseForbidden("请输入5-20个字符的用户名")
 
-        if not re.match(r'^[0-1a-zA-Z]{8,20}', password):
+        if not re.match(r'^[0-9a-zA-Z]{8,20}', password):
             return http.HttpResponseForbidden("请输入8-20位的密码")
 
         if not password == password2:
             return http.HttpResponseForbidden("2次输入的密码不一致")
 
-        if not re.match(r'^1[3-9]\d{9}$]', mobile):
+        if not re.match(r'^1[3-9]\d{9}$', mobile):
             return http.HttpResponseForbidden("请输入正确的手机号")
 
         if allow != "on":
@@ -49,7 +51,7 @@ class Register(View):
         except DatabaseError:
             render(request, 'register.html', {"register_errmsg": "注册失败"})
 
-        return http.HttpResponse("注册成功，重定向到首页")
+        return redirect(reverse('contents:index'))
 
 
 

@@ -46,7 +46,7 @@ var vm = new Vue({
                 this.error_password2 = true;
 
             }else{
-                this.password2 = false;
+                this.error_password2 = false;
             }
         },
         check_mobile(){
