@@ -7,9 +7,26 @@ from django import http
 from django.shortcuts import redirect, reverse
 import re
 
+from meiduo_mao.utils.response_code import RETCODE
 from users.models import User
 from django.db import DatabaseError
+
+from django.contrib.auth import login
 # Create your views here.
+
+
+class UsernameCountView(View):
+
+    def get(self, request, username):
+        """
+        判断用户是否重复注册
+        :param request:
+        :param username: 用户名
+        :return:
+        """
+        count = User.objects.filter(username=username).count()
+
+        return http.JsonResponse({"code": RETCODE.OK, "errmsg": "ok", "count": count})
 
 
 class Register(View):
@@ -46,10 +63,13 @@ class Register(View):
         if allow != "on":
             return http.HttpResponseForbidden("请勾选用户协议")
 
+
         try:
-            User.objects.create_user(username=username, password=password, mobile=mobile)
+            user = User.objects.create_user(username=username, password=password, mobile=mobile)
         except DatabaseError:
             render(request, 'register.html', {"register_errmsg": "注册失败"})
+        else:
+            login(request, user)
 
         return redirect(reverse('contents:index'))
 
