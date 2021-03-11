@@ -8,6 +8,10 @@ var vm = new Vue({
         password2:'',
         mobile:'',
         allow:'',
+        image_code_url:'',
+        uuid:'',
+
+
         // v-show
         error_name: false,
         error_password: false,
@@ -19,8 +23,19 @@ var vm = new Vue({
         error_name_message:'',
         error_mobile_message:'',
     },
+    mounted(){//页面加载完调用
+        //生成图形验证码
+        this.generate_image_code();
+
+        },
+
 
     methods:{
+        generate_image_code(){
+            this.uuid = generateUUID();
+            this.image_code_url = "/image_codes/"+this.uuid+"/";
+
+        },
         check_username(){
             let re = /^[0-9a-zA-Z_-]{5,20}$/;
             if(re.test(this.username)){
