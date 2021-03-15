@@ -12,8 +12,50 @@ from meiduo_mao.utils.response_code import RETCODE
 from users.models import User
 from django.db import DatabaseError
 
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 # Create your views here.
+
+
+class LoginView(View):
+
+    def get(self, request):
+
+        return render(request, 'login.html')
+
+    def post(self, request):
+
+        # 接受参数
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        remembered = request.POST.get("remembered")
+
+        # 校验参数
+        if not all([username, password]):
+            return http.HttpResponseForbidden("缺少必要参数")
+
+        if not re.match(r'^[a-zA-Z0-9_-]{5,20}$', username):
+            return http.HttpResponseForbidden("请输入正确的用户名或手机号")
+
+        if not re.match(r'^[0-9a-zA-Z]{8,20}$', password):
+            return http.HttpResponseForbidden("请输入8到20位的密码")
+
+        # 认证用户,判断用户是否存在
+        user = authenticate(username=username, password=password)
+
+        if user is None:
+            return render(request, 'login.html', {"account_errmsg": "账号或密码错误"})
+
+        # 登录
+        login(request, user)
+
+        # 状态保持
+        if remembered == "on":
+            request.session.set_expiry(None)
+        else:
+            request.session.set_expiry(0)
+
+        # 跳转到首页
+        return redirect(reverse('contents:index'))
 
 
 class UsernameCountView(View):
