@@ -224,3 +224,5 @@ LOGGING = {
 }
 "AUTH_USER_MODEL = '应用名.模型类名'"
 AUTH_USER_MODEL = 'users.User'
+
+AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileBackend']
