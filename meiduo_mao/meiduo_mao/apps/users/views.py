@@ -12,8 +12,22 @@ from meiduo_mao.utils.response_code import RETCODE
 from users.models import User
 from django.db import DatabaseError
 
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 # Create your views here.
+
+
+class LogoutView(View):
+
+    def get(self, request):
+
+        # 退出登录
+        logout(request)
+
+        response = redirect(reverse('contents:index'))
+        # 删除session
+        response.delete_cookie('username')
+
+        return response
 
 
 class LoginView(View):
@@ -55,7 +69,12 @@ class LoginView(View):
             request.session.set_expiry(0)
 
         # 跳转到首页
-        return redirect(reverse('contents:index'))
+
+        response = redirect(reverse('contents:index'))
+
+        response.set_cookie("username", username, expires=3600 * 24 * 15)
+
+        return response
 
 
 class UsernameCountView(View):
@@ -123,7 +142,11 @@ class Register(View):
         else:
             login(request, user)
 
-        return redirect(reverse('contents:index'))
+        response = redirect(reverse('contents:index'))
+
+        response.set_cookie("username", username, expires=3600 * 24 * 15)
+
+        return response
 
 
 
