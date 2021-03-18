@@ -13,7 +13,15 @@ from users.models import User
 from django.db import DatabaseError
 
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
+
+
+class UserInfoView(LoginRequiredMixin, View):
+
+    def get(self, request):
+
+        return render(request, 'user_center_info.html')
 
 
 class LogoutView(View):
@@ -68,9 +76,14 @@ class LoginView(View):
         else:
             request.session.set_expiry(0)
 
+        next = request.GET.get(next)
+        if next:
+            response = redirect(next)
+        else:
+            response = redirect(reverse('contents:index'))
         # 跳转到首页
 
-        response = redirect(reverse('contents:index'))
+        # response = redirect(reverse('contents:index'))
 
         response.set_cookie("username", username, expires=3600 * 24 * 15)
 
