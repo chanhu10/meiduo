@@ -76,7 +76,7 @@ class LoginView(View):
         else:
             request.session.set_expiry(0)
 
-        next = request.GET.get(next)
+        next = request.GET.get('next')
         if next:
             response = redirect(next)
         else:
