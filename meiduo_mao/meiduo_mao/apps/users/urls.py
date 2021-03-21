@@ -12,4 +12,8 @@ urlpatterns = [
 
     path('info/', views.UserInfoView.as_view(), name='info'),
 
+    path('emails/', views.EmailView.as_view()),
+
+    path('emails/verification/', views.VerifyEmailView.as_view()),
+
 ]

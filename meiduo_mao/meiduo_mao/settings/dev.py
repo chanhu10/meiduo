@@ -29,7 +29,7 @@ SECRET_KEY = 'tps#o%&cwut6_@9(h3#$yfdembu3q7b7!t7!o&%!0qq_4wl!@z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["192.168.1.101",'127.0.0.1']
 
 
 # Application definition
@@ -235,3 +235,14 @@ LOGIN_URL = 'login/'
 QQ_CLIENT_ID = '101518219'
 QQ_CLIENT_SECRET = '418d84ebdc7241efb79536886ae95224'
 QQ_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback'
+
+# 邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 指定邮件后端
+EMAIL_HOST = 'smtp.126.com' # 发邮件主机
+EMAIL_PORT = 25 # 发邮件端口
+EMAIL_HOST_USER = 'chanhu9@126.com' # 授权的邮箱
+EMAIL_HOST_PASSWORD = 'YVLGKGFRLOXAAXTE' # 邮箱授权时获得的密码，非注册登录密码
+EMAIL_FROM = '缠中说禅<chanhu9@126.com>' # 发件人抬头
+
+
+EMAIL_VERIFY_URL = 'http://127.0.0.1:8000/emails/verification/'
