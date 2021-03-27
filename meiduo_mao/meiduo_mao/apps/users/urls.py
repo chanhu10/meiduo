@@ -18,5 +18,7 @@ urlpatterns = [
 
     path('address/', views.AddressView.as_view(), name='address'),
 
+    path('addresses/create/', views.AddressCreateView.as_view(), name="addressCreate"),
+
 
 ]
