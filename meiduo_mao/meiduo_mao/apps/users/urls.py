@@ -20,5 +20,11 @@ urlpatterns = [
 
     path('addresses/create/', views.AddressCreateView.as_view(), name="addressCreate"),
 
+    path('addresses/<int:address_id>/', views.UpdateDestroyAddressView.as_view(), name='updateaddresss'),
+
+    path('addresses/<int:address_id>/default/', views.DefaultAddressView.as_view(), name='defaultaddresss'),
+
+    path('addresses/<int:address_id>/title/', views.UpdateTitleAddressView.as_view(), name='updatetitle'),
+
 
 ]

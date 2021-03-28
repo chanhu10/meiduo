@@ -268,7 +268,7 @@ let vm = new Vue({
                 responseType: 'json'
             })
                 .then(response => {
-                    if (response.data.code == '0') {
+                    if (response.data.code === '0') {
                         // 设置默认地址标签
                         this.default_address_id = this.addresses[index].id;
                     } else if (response.data.code == '4101') {
