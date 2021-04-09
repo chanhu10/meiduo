@@ -1,39 +1,28 @@
 from django.shortcuts import render
 
 from django.views import View
+from collections import OrderedDict
 
 
 from goods.models import GoodsChannelGroup, GoodsChannel, GoodsCategory
+from contents.models import ContentCategory
+from goods.utils import get_category
 # Create your views here.
 
 class IndexView(View):
 
     def get(self, request):
 
-        categories = {}
-        channels = GoodsChannel.objects.all()
-        for channel in channels:
-            group_id = channel.group_id
-            if group_id not in categories.keys():
-                categories[group_id] = {"channels": [], "sub_cats":[]}
+        categories = get_category()
 
-            cat1 = channel.category
-
-            categories[group_id]["channels"].append({
-                "id": cat1.id,
-                "name": cat1.name,
-                "url": channel.url
-            })
-
-            for cat2 in cat1.subs.all():
-                cat2.sub_cats = []
-                for cat3 in cat2.subs.all():
-                    cat2.sub_cats.append(cat3)
-
-                categories[group_id]["sub_cats"].append(cat2)
+        contents = OrderedDict()
+        content_categoties = ContentCategory.objects.all()
+        for content_categoty in content_categoties:
+            contents[content_categoty.key] = content_categoty.content_set.filter(status=True).order_by("sequence")
 
         context = {
-            "categories":categories
+            "categories":categories,
+            "contents":contents
         }
 
         return render(request, 'index.html', context)

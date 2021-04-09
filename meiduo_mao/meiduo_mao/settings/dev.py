@@ -248,3 +248,7 @@ EMAIL_FROM = '缠中说禅<chanhu9@126.com>' # 发件人抬头
 
 
 EMAIL_VERIFY_URL = 'http://127.0.0.1:8000/emails/verification/'
+
+DEFAULT_FILE_STORAGE = 'meiduo_mao.utils.fastdfs.fdfs_storage.MyStorage'
+
+FDFS_BASE_URL = 'http://47.105.192.30:8888/'
