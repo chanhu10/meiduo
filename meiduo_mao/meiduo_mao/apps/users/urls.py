@@ -26,5 +26,7 @@ urlpatterns = [
 
     path('addresses/<int:address_id>/title/', views.UpdateTitleAddressView.as_view(), name='updatetitle'),
 
+    path('browse_histories/', views.UserBrowseHistories.as_view()),
+
 
 ]

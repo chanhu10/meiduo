@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'oauth',
     'areas',
     'goods',
+    'carts',
 
 ]
 
@@ -118,6 +119,22 @@ CACHES = {
                     "PASSWORD": "mima1234"
                 }
             },
+    "history": { # 用户浏览记录
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://47.105.192.30:6379/3",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "PASSWORD": "mima1234"
+            }
+        },
+    "carts": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://47.105.192.30:6379/4",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": "mima1234"
+        }
+    },
 
 }
 
@@ -142,7 +159,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # 数据库引擎
         'HOST': '47.105.192.30', # 数据库主机
         'PORT': 3306, # 数据库端口
-        'USER': 'zhangfei', # 数据库用户名
+        'USER': 'root', # 数据库用户名
         'PASSWORD': 'mima1234', # 数据库用户密码
         'NAME': 'meiduo' # 数据库名字
     },
@@ -172,7 +189,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 

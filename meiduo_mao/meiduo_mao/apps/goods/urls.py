@@ -12,4 +12,8 @@ urlpatterns = [
 
     path('hot/<int:category_id>/', views.HotGoodsView.as_view()),
 
+    path('detail/<int:sku_id>/', views.DetailView.as_view(), name="detail"),
+
+    path('detail/visit/<int:category_id>/', views.DetailVisitView.as_view(), name="visit"),
+
 ]

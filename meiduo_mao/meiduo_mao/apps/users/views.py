@@ -22,11 +22,57 @@ from meiduo_mao.utils.views import LoginRequiredJSONMixin
 from celery_tasks.email.tasks import send_verify_email
 from users.utils import generalte_verify_email_url,check_verify_email_token
 from users.models import Address
+from goods.models import SKU
 
 # Create your views here.
 
 
 logger = logging.getLogger("django")
+
+class UserBrowseHistories(LoginRequiredJSONMixin, View):
+
+    def post(self, request):
+        # 接受参数
+        json_str = request.body.decode()
+        json_dict = json.loads(json_str)
+        sku_id = json_dict.get("sku_id")
+
+        # 校验参数
+        try:
+            SKU.objects.get(id=sku_id)
+        except SKU.DoesNotExist:
+            return http.HttpResponseForbidden("参数sku_id错误")
+
+        redis_conn = get_redis_connection('history')
+        user = request.user
+        pl = redis_conn.pipeline()
+
+        pl.lrem(user.id, 0, sku_id)
+        pl.lpush(user.id, sku_id)
+        pl.ltrim(user.id, 0, 4)
+        pl.execute()
+
+        return http.JsonResponse({"code":0, "errmsg": "ok"})
+
+    def get(self, request):
+        user = request.user
+        redis_conn = get_redis_connection('history')
+
+        sku_ids = redis_conn.lrange(user.id, 0, -1)
+        skus = []
+        for sku_id in sku_ids:
+            sku = SKU.objects.get(id=sku_id)
+            skus.append({
+                "id": sku.id,
+                "name": sku.name,
+                "price": sku.price,
+                "default_image_url": sku.default_image.url
+            })
+
+        return http.JsonResponse({"code": 0, "errmsg": "ok"})
+
+
+
 
 
 class UpdateTitleAddressView(LoginRequiredJSONMixin, View):
