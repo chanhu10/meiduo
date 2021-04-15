@@ -23,6 +23,7 @@ from celery_tasks.email.tasks import send_verify_email
 from users.utils import generalte_verify_email_url,check_verify_email_token
 from users.models import Address
 from goods.models import SKU
+from carts.utils import merge_carts_cookies_redis
 
 # Create your views here.
 
@@ -393,6 +394,8 @@ class LoginView(View):
         # response = redirect(reverse('contents:index'))
 
         response.set_cookie("username", username, expires=3600 * 24 * 15)
+
+        response = merge_carts_cookies_redis(request=request, user=user, response=response)
 
         return response
 

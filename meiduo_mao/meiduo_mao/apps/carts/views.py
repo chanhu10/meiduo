@@ -13,6 +13,58 @@ from goods.models import SKU
 # Create your views here.
 
 
+class CartsSelectAllView(View):
+
+    def put(self, request):
+
+        json_dict = json.loads(request.body.decode())
+        selected = json_dict.get('selected', True)
+
+        # 校验参数
+        if selected:
+            if not isinstance(selected, bool):
+                return http.HttpResponseForbidden('参数selected有误')
+
+        # 判断用户是否登录
+        user = request.user
+        if user is not None and user.is_authenticated:
+            # 用户已登录，操作redis购物车
+            redis_conn = get_redis_connection('carts')
+            redis_cart = redis_conn.hgetall('carts_%s'%user.id)
+            redis_sku_ids = redis_cart.keys()
+
+            if selected:
+                redis_conn.sadd('selected_%s'%user.id, *redis_sku_ids)
+
+            else:
+                redis_conn.srem('selected_%s'%user.id, *redis_sku_ids)
+
+            return http.JsonResponse({"code":0, "errmsg":"ok"})
+
+        else:
+
+            cart_str = request.COOKIES.get('carts')
+
+            resopnse = http.JsonResponse({"code": 0, "errmsg": "ok"})
+
+            if cart_str:
+                cart_str_bytes = cart_str.encode()
+                cart_dict_bytes = base64.b64decode(cart_str_bytes)
+                cart_dict = pickle.loads(cart_dict_bytes)
+
+                for sku_id in cart_dict:
+                    cart_dict[sku_id]["selected"] = selected
+
+                cart_dict_bytes = pickle.dumps(cart_dict)
+                cart_str_bytes = base64.b64encode(cart_dict_bytes)
+                cookie_cart_str = cart_str_bytes.decode()
+
+                resopnse.set_cookie("carts", cookie_cart_str)
+
+            return resopnse
+
+
+
 class CartsView(View):
 
     def post(self, request):
