@@ -395,7 +395,7 @@ class LoginView(View):
 
         response.set_cookie("username", username, expires=3600 * 24 * 15)
 
-        response = merge_carts_cookies_redis(request=request, user=user, response=response)
+        # response = merge_carts_cookies_redis(request=request, user=user, response=response)
 
         return response
 

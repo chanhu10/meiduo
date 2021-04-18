@@ -28,6 +28,7 @@ urlpatterns = [
     re_path(r'^search/', include('haystack.urls')),
     path('search/', include('haystack.urls')),
     path('', include(('carts.urls', 'goods'), namespace='carts')),
+    path('', include(('orders.urls', 'orders'), namespace='orders')),
 
 
 ]
