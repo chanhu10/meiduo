@@ -106,7 +106,7 @@ class OrderCommitView(LoginRequiredJSONMixin, View):
                         # sku.save()
                         new_stock=origin_stock - sku_count
                         new_sales = origin_sales + sku_count
-                        result = sku.objects.filter(id=sku_id, stock=origin_stock).update(stock=new_stock, sales=new_sales)
+                        result = SKU.objects.filter(id=sku_id, stock=origin_stock).update(stock=new_stock, sales=new_sales)
 
                         if result == 0:
                             continue

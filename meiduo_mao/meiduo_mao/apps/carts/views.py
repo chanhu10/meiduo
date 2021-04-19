@@ -275,8 +275,7 @@ class CartsView(View):
         # 接收参数
         json_dict = json.loads(request.body.decode())
         sku_id = json_dict.get('sku_id')
-
-        # 判断sku_id是否存在
+      # 判断sku_id是否存在
         try:
             sku = SKU.objects.get(id=sku_id)
         except SKU.DoesNotExist:
@@ -317,7 +316,6 @@ class CartsView(View):
             return resopnse
 
 
-        pass
 
 
 

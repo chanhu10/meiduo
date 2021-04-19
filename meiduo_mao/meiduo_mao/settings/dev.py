@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'goods',
     'carts',
     'orders',
+    'payment',
+
 
 ]
 
@@ -287,3 +289,9 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 5
+
+
+ALIPAY_APPID = '2016082100308405'
+ALIPAY_DEBUG = True
+ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
+ALIPAY_RETURN_URL = 'https://www.baidu.com'
