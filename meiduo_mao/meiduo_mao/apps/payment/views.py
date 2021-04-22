@@ -1,4 +1,4 @@
-from django.shortcuts import render
+"""from django.shortcuts import render
 
 from django.conf import settings
 from django.views import View
@@ -103,5 +103,6 @@ class PaymentView(LoginRequiredJSONMixin, View):
         # 沙箱环境电脑网站支付网关：https://openapi.alipaydev.com/gateway.do? + order_string
         alipay_url = settings.ALIPAY_URL + "?" + order_string
         return http.JsonResponse({'code': 0, 'errmsg': 'OK', 'alipay_url': alipay_url})
+        """
 
 
