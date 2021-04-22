@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'carts',
     'orders',
     'payment',
+    'django_crontab',
 
 
 ]
@@ -166,6 +167,14 @@ DATABASES = {
         'PASSWORD': 'mima1234', # 数据库用户密码
         'NAME': 'meiduo' # 数据库名字
     },
+    'slave': {
+            'ENGINE': 'django.db.backends.mysql', # 数据库引擎
+            'HOST': '47.105.192.30', # 数据库主机
+            'PORT': 8306, # 数据库端口
+            'USER': 'root', # 数据库用户名
+            'PASSWORD': 'mima1234', # 数据库用户密码
+            'NAME': 'meiduo' # 数据库名字
+        },
 }
 
 # Password validation
@@ -295,3 +304,18 @@ ALIPAY_APPID = '2016082100308405'
 ALIPAY_DEBUG = True
 ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
 ALIPAY_RETURN_URL = 'https://www.baidu.com'
+
+# # 定时任务
+# CRONJOBS = [
+#     # 每1分钟生成一次首页静态文件
+#     ('*/2 * * * *', 'contents.crons.generate_static_index_html', '>> ' + os.path.join(os.path.dirname(BASE_DIR), 'logs\crontab_log'))
+# ]
+
+CRONJOBS = [
+    # 每1分钟生成一次首页静态文件
+    ('*/2 * * * *', 'contents.crons.generate_static_index_html2', '>> ' + os.path.join(os.path.dirname(BASE_DIR), 'logs/crontab.log'))
+]
+
+CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
+
+DATABASE_ROUTERS = ['meiduo_mao.utils.db_router.MasterSlaveDBRouter']
